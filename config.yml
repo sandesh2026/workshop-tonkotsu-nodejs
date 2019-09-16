@@ -1,18 +1,18 @@
- workflows:
+ jobs:
+  build:
+
+    steps:
+      - checkout
+      - run: npm install
+  test:
+   
+    steps:
+      - checkout
+      - run: npm run test
+      - run: npm start
+workflows:
   version: 2
-  commit:
+  build_and_test:
     jobs:
+      - build
       - test
-      - deploy
-  nightly:
-    triggers: #use the triggers key to indicate a scheduled build
-      - schedule:
-          cron: "* * * * *" # use cron syntax to set the schedule
-          filters:
-            branches:
-              only:
-                - master
-                - beta
-    jobs:
-      - coverage
-Manual Appr
