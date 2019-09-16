@@ -1,18 +1,4 @@
-jobs:
-  build:
-   
-    steps:
-      - checkout
-      - run: npm install
-  test:
-   
-    steps:
-      - checkout
-      - run: npm run test
-      - run: npm start
-workflows:
-  version: 2
-  build_and_test:
-    jobs:
-      - build
-      - test
+trigger:
+  branches:
+    include:
+    - master
