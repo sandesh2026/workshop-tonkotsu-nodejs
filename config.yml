@@ -1,14 +1,18 @@
- steps:
-      - checkout
-      - run:
-          name: update-npm
-          command: 'sudo npm install -g npm@latest'
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-      - run:
-          name: install-npm-wee
-          command: npm install
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
+ workflows:
+  version: 2
+  commit:
+    jobs:
+      - test
+      - deploy
+  nightly:
+    triggers: #use the triggers key to indicate a scheduled build
+      - schedule:
+          cron: "* * * * *" # use cron syntax to set the schedule
+          filters:
+            branches:
+              only:
+                - master
+                - beta
+    jobs:
+      - coverage
+Manual Appr
