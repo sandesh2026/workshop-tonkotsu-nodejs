@@ -35,11 +35,17 @@ jobs:
   deploy:
     orbs:
       heroku: circleci/heroku@1.0.0
-    executor: heroku/default # Uses the basic buildpack-deps image, which has the prerequisites for installing heroku's CLI.
+    executor: heroku/machine #he basic buildpack-deps image, which has the prerequisites for installing heroku's CLI.
     steps:
       - checkout
       - heroku/install # Runs the heroku install command, if necessary.
       - heroku/deploy-via-git: # Deploys branch to Heroku via git push.
+          - run: cd workshop-tonkotsu-nodejs
+          - run: git checkout testbranch
+          - run: heroku create
+          - run: git remote rename heroku heroku-staging
+          - run: git push heroku testbranch:master
+
           only-branch: testbranch
 workflows:
   version: 2
