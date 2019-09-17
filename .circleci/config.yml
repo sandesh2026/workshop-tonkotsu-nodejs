@@ -53,6 +53,7 @@ jobs:
       - checkout
       - heroku/install
       - heroku/deploy-via-git:
+          app-name: $HEROKU_APP_NAME
           force: true
   deploy_prod:
     executor: heroku/default
@@ -60,6 +61,7 @@ jobs:
       - checkout
       - heroku/install
       - heroku/deploy-via-git:
+          app-name: $HEROKU_APP_NAME_PROD
           force: true
           
 
