@@ -5,9 +5,6 @@ defaults: &defaults
   working_directory: ~/repo
   docker:
     - image: circleci/node:8.9.1
- orbs:
-      heroku: circleci/heroku@1.0.0
-
 jobs:
   test:
     <<: *defaults  
@@ -21,6 +18,9 @@ jobs:
 
       - run: npm install  #install node.js package
       - run:
+          name: run build
+          command: npm build
+      - run:
           name: Run tests
           command: npm test
           
@@ -32,22 +32,19 @@ jobs:
       - persist_to_workspace:
           root: ~/repo
           paths: .
-
-workflows:
-  version: 2
-  only_test:
-    jobs:
-      - test
-      version: 2.1
-workflows:
-  heroku_deploy:
-    jobs:
-      - deploy
-jobs:
   deploy:
     executor: heroku/default # Uses the basic buildpack-deps image, which has the prerequisites for installing heroku's CLI.
     steps:
       - checkout
       - heroku/install # Runs the heroku install command, if necessary.
       - heroku/deploy-via-git: # Deploys branch to Heroku via git push.
-          only-branch: testbranch # If you specify an only-branch, the deploy will not occur for any othe
+          only-branch: testbranch
+workflows:
+  version: 2
+  only_test:
+    jobs:
+      - test
+      - deploy
+      
+
+
