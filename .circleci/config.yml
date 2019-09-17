@@ -1,11 +1,11 @@
-orbs:
-    heroku: circleci/heroku@1.0.0
+version: 2
+
 defaults: &defaults
   working_directory: ~/repo
-  docker:
-    - image: circleci/node:8.9.1
 jobs:
   test:
+    docker:
+    - image: circleci/node:8.9.1
     <<: *defaults  
     steps:
       - checkout
@@ -33,6 +33,8 @@ jobs:
           paths: .
 
   deploy:
+    orbs:
+      heroku: circleci/heroku@1.0.0
     executor: heroku/default # Uses the basic buildpack-deps image, which has the prerequisites for installing heroku's CLI.
     steps:
       - checkout
