@@ -5,7 +5,7 @@
   "private": false,
   "license": "MIT",
   "author": "pierluigi@github.com",
-  "repository: {"type": "git", "url": "https://github.com/PramodhKumarM/workshop-tonkotsu-nodejs.git"},
+  "repository": {"type": "git", "url": "https://github.com/PramodhKumarM/workshop-tonkotsu-nodejs.git"},
   "scripts": {
     "start": "node index.js",
     "lint": "eslint */**.js",
