@@ -9,12 +9,18 @@ workflows:
   heroku_deploy:
     jobs:
       - test
-      - deploy:
+      - deploy_stage:
           requires:
               - test
           filters:
             branches:
               ignore: master
+      - deploy_prod:
+          requires:
+              - test
+          filters:
+            branches:
+              only: deployprod
 jobs:
   test:
     <<: *defaults  
@@ -41,7 +47,14 @@ jobs:
           root: ~/repo
           paths: .
 
-  deploy:
+  deploy_stage:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - heroku/deploy-via-git:
+          force: true
+  deploy_prod:
     executor: heroku/default
     steps:
       - checkout
