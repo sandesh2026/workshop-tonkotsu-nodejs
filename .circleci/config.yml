@@ -43,7 +43,10 @@ jobs:
       - heroku/install
       - heroku/deploy-via-git:
           force: true
-          only-branch: deploybranch
+          filters:
+            branches:
+              ignore: master
+
 
 
 
