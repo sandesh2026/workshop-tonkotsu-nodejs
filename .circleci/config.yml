@@ -18,6 +18,7 @@ workflows:
       - deploy_prod:
           requires:
               - test
+              - deploy_stage
           filters:
             branches:
               only: deployprod
