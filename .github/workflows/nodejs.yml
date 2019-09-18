@@ -32,4 +32,4 @@ jobs:
           scope: 'sandesh2026'
       - run: npm publish
         env:
-          MY_TOKEN: ${{secrets.npm_github}}
+          NODE_AUTH_TOKEN: ${{secrets.new_token}}
