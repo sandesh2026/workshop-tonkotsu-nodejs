@@ -1,10 +1,27 @@
-version: 2
-
+version: 2.1
 defaults: &defaults
   working_directory: ~/repo
   docker:
     - image: circleci/node:8.9.1
-
+orbs:
+  heroku: circleci/heroku@0.0.8
+workflows:
+  heroku_deploy:
+    jobs:
+      - test
+      - deploy_stage:
+          requires:
+              - test
+          filters:
+            branches:
+              ignore: master
+      - deploy_prod:
+          requires:
+              - test
+              - deploy_stage
+          filters:
+            branches:
+              only: deployprod
 jobs:
   test:
     <<: *defaults  
@@ -17,6 +34,7 @@ jobs:
           - v1-dependencies-
 
       - run: npm install  #install node.js package
+      - run: npm build
       - run:
           name: Run tests
           command: npm test
@@ -30,8 +48,24 @@ jobs:
           root: ~/repo
           paths: .
 
-workflows:
-  version: 2
-  only_test:
-    jobs:
-      - test
+  deploy_stage:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - heroku/deploy-via-git:
+          app-name: $HEROKU_APP_NAME
+          force: true
+  deploy_prod:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - heroku/deploy-via-git:
+          app-name: $HEROKU_APP_NAME_PROD
+          force: true
+          
+
+
+
+
